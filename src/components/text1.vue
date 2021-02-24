@@ -23,21 +23,26 @@
             postMsg() {
                 var that = this;
                 that.$api.postNum('bebcbb5b8facb541cc017e018622c5e0', '陕西')
+                    // 后面也可以把输入方式绑定到input里
                     .then(res => {
                         let arr1 = [];
                         for (const index in res.newslist[0]) {
                             arr1.push(res.newslist[0][index])
+                            // 将对象数组所有的键值单独列入一个数组
                         }
+
                         that.listData = [...arr1.slice(0, 1), ...arr1.slice(1, 6).map(Number)];
-                        console.log(this.listData);
-                        // 以JSON格式将数组存入缓存
+                        // 为了echarts需求对端口数据形式的处理
+
                         sessionStorage.setItem('user', JSON.stringify(this.listData));
+                        // 以JSON格式将数组存入缓存
+                        console.log('已经存入sessionStorage');
                     })
                     .catch(res => {
                         console.log(res)
                     })
             },
-            // get方式获取数据
+            // get方式获取数据(未加本地存储功能)
             getMsg2() {
                 var that = this;
                 that.$api.getNum('bebcbb5b8facb541cc017e018622c5e0', '陕西')
@@ -48,6 +53,7 @@
                         console.log(res)
                     })
             },
+            // echarts配置项
             myEcharts() {
                 if (!sessionStorage.getItem('user')) {
                     alert('请先获取数据')
@@ -117,11 +123,11 @@
         width: 100%;
         height: 400px;
         font-size: 20px;
-    }
 
-    button {
-        width: 120px;
-        height: 80px;
-        font-size: 18px;
+        button {
+            width: 120px;
+            height: 80px;
+            font-size: 18px;
+        }
     }
 </style>
