@@ -22,7 +22,7 @@
             // post方式获取数据
             postMsg() {
                 var that = this;
-                that.$api.postNum('YourKey', 'YourProvince')
+                that.$api.postNum('bebcbb5b8facb541cc017e018622c5e0', '陕西')
                     .then(res => {
                         let arr1 = [];
                         for (const index in res.newslist[0]) {
@@ -31,7 +31,7 @@
                         that.listData = [...arr1.slice(0, 1), ...arr1.slice(1, 6).map(Number)];
                         console.log(this.listData);
                         // 以JSON格式将数组存入缓存
-                        localStorage.setItem('user',JSON.stringify(this.listData));
+                        sessionStorage.setItem('user', JSON.stringify(this.listData));
                     })
                     .catch(res => {
                         console.log(res)
@@ -40,7 +40,7 @@
             // get方式获取数据
             getMsg2() {
                 var that = this;
-                that.$api.getNum('YourKey', 'YourProvince')
+                that.$api.getNum('bebcbb5b8facb541cc017e018622c5e0', '陕西')
                     .then(res => {
                         console.log(res);
                     })
@@ -49,59 +49,63 @@
                     })
             },
             myEcharts() {
-                console.log(localStorage.getItem('user'));
-                // 基于准备好的dom，初始化echarts实例
-                let myChart = this.$echarts.init(document.getElementById('myChart'));
+                if (!sessionStorage.getItem('user')) {
+                    alert('请先获取数据')
+                } else {
 
-                // 指定图表的配置项和数据
-                myChart.setOption({
-                    legend: {},
-                    tooltip: {},
-                    dataset: {
-                        source: [
-                            ['product', '0号柴油', '89号汽油', '92号汽油', '95号汽油', '98号汽油'],
-                            JSON.parse(localStorage.getItem('user'))
+                    // 基于准备好的dom，初始化echarts实例
+                    let myChart = this.$echarts.init(document.getElementById('myChart'));
+
+                    // 指定图表的配置项和数据
+                    myChart.setOption({
+                        legend: {},
+                        tooltip: {},
+                        dataset: {
+                            source: [
+                                ['product', '0号柴油', '89号汽油', '92号汽油', '95号汽油', '98号汽油'],
+                                JSON.parse(sessionStorage.getItem('user'))
+                            ]
+                        },
+                        xAxis: {
+                            type: 'category'
+                        },
+                        yAxis: {},
+                        series: [{
+                                type: 'bar',
+                                label: {
+                                    show: true
+                                }
+                            },
+                            {
+                                type: 'bar',
+                                label: {
+                                    show: true
+                                }
+                            },
+                            {
+                                type: 'bar',
+                                label: {
+                                    show: true
+                                }
+                            },
+                            {
+                                type: 'bar',
+                                label: {
+                                    show: true
+                                }
+                            },
+                            {
+                                type: 'bar',
+                                label: {
+                                    show: true
+                                }
+                            }
                         ]
-                    },
-                    xAxis: {
-                        type: 'category'
-                    },
-                    yAxis: {},
-                    series: [{
-                            type: 'bar',
-                            label: {
-                                show: true
-                            }
-                        },
-                        {
-                            type: 'bar',
-                            label: {
-                                show: true
-                            }
-                        },
-                        {
-                            type: 'bar',
-                            label: {
-                                show: true
-                            }
-                        },
-                        {
-                            type: 'bar',
-                            label: {
-                                show: true
-                            }
-                        },
-                        {
-                            type: 'bar',
-                            label: {
-                                show: true
-                            }
-                        }
-                    ]
-                });
+                    });
+                }
             },
             showData() {
-                console.log(JSON.parse(localStorage.getItem('user')));
+                console.log(JSON.parse(sessionStorage.getItem('user')));
             }
 
         },
@@ -116,8 +120,8 @@
     }
 
     button {
-        width: 100px;
+        width: 120px;
         height: 80px;
-        font-size: 24px;
+        font-size: 18px;
     }
 </style>
